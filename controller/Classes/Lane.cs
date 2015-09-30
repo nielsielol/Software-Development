@@ -13,8 +13,8 @@ namespace controller.Classes
 
         public TrafficLight trafficLight;
 
-        private readonly int defaultPriority = 7;
-        private int priority;
+        private readonly int defaultPriority;
+        private int priority = 0;
         private bool vehicleWaiting = false;
 
         public List<int> crossingLanes = new List<int>();
@@ -25,11 +25,12 @@ namespace controller.Classes
         /// <param name="laneNumber">the number of the lane</param>
         /// <param name="crossingLanes">this needs to be a list of integers with the numbers of other lanes crossing when it's on green</param>
         /// <param name="comment">place a comment like: "this is a bikelane, buslane or normallane"</param>
-        public Lane(int laneNumber, List<int> crossingLanes, string comment = "No comment added") {
+        public Lane(int laneNumber, List<int> crossingLanes, string comment = "No comment added", int defaultPriority = 7) {
             this.laneNumber = laneNumber;
             this.comment = comment;
             this.crossingLanes = crossingLanes;
             trafficLight = new TrafficLight();
+            this.defaultPriority = defaultPriority;
         }
 
         public void changeTrafficLight()
@@ -37,6 +38,18 @@ namespace controller.Classes
             trafficLight.changeTrafficLight();
         }
 
+        /// <summary>
+        /// this will return the lane number use this for checking crosslanes
+        /// </summary>
+        /// <returns>the lane number</returns>
+        public int getLaneNumber() {
+            return laneNumber;
+        }
+
+        /// <summary>
+        /// whenever a vehicle change presists call this function
+        /// </summary>
+        /// <param name="waiting">true for vehicle waiting, false when there isn't</param>
         public void setVehicleWaiting(bool waiting) {
             vehicleWaiting = waiting;
             if (vehicleWaiting)//if it's true we will set the priority
@@ -53,6 +66,10 @@ namespace controller.Classes
             priority = defaultPriority;
         }
 
+        /// <summary>
+        /// returns the value of the current priority
+        /// </summary>
+        /// <returns> priority </returns>
         public int getPriority()
         {
             return priority;

@@ -22,7 +22,7 @@ namespace controller.Classes
             if (currentState == lightColor.red)
                 currentState = lightColor.green;
             if (currentState == lightColor.green)
-                currentState = lightColor.yellow;
+                currentState = lightColor.red;//this needs to be yellow
             if (currentState == lightColor.yellow)
                 currentState = lightColor.red;
         }
