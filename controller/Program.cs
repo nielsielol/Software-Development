@@ -68,7 +68,7 @@ namespace controller
                 }
             }
 
-            // we should find something else for this becouse this is no solution
+            
             if (higestPriority == 11) {
                 Console.WriteLine("[program.cs - getHighestPriority] - Error no highest priority found");
                 //throw new Exception("error no highest priority found");

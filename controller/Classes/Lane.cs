@@ -80,7 +80,7 @@ namespace controller.Classes
         /// </summary>
         public void increasePriority()
         {
-            if (priority > 0)
+            if (priority > 1)
             {
                 priority -= 1;
             }

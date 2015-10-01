@@ -9,7 +9,9 @@ namespace controller.Classes
     public enum lightColor { green, yellow, red };
     class TrafficLight
     {
-        public lightColor currentState { get; set; }  
+        public lightColor currentState { get; set; }
+        private int timeSpentGreen;
+        private int timeSpentRed;
 
         public TrafficLight() {
             currentState = lightColor.red;
@@ -25,6 +27,14 @@ namespace controller.Classes
                 currentState = lightColor.red;//this needs to be yellow
             if (currentState == lightColor.yellow)
                 currentState = lightColor.red;
+        }
+
+        public void increaseGreenLight() {
+            timeSpentGreen++;
+        }
+
+        public int getTimeSpentGreen() {
+            return timeSpentGreen;
         }
 
     }
