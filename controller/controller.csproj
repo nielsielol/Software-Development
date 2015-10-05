@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Lane.cs" />
+    <Compile Include="Classes\Tickerthread.cs" />
     <Compile Include="Classes\TrafficLight.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

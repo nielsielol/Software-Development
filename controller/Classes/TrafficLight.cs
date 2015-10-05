@@ -20,13 +20,11 @@ namespace controller.Classes
         /// <summary>
         /// this changes the State of the trafficlight to the next state.
         /// </summary>
-        public void changeTrafficLight() {
-            if (currentState == lightColor.red)
-                currentState = lightColor.green;
-            if (currentState == lightColor.green)
-                currentState = lightColor.red;//this needs to be yellow
-            if (currentState == lightColor.yellow)
-                currentState = lightColor.red;
+        public void setTrafficLight(lightColor color) {
+            
+            if (color == lightColor.yellow) {
+
+            }
         }
 
         public void increaseGreenLight() {
@@ -35,6 +33,14 @@ namespace controller.Classes
 
         public int getTimeSpentGreen() {
             return timeSpentGreen;
+        }
+
+        public void increaseRedLight() {
+            timeSpentRed++;
+        }
+
+        public int getTimeSpentRed() {
+            return timeSpentRed;
         }
 
     }
