@@ -21,6 +21,21 @@ namespace controller
             foreach (Lane lane in lanes) {
                 Console.WriteLine("state:" + lane.trafficLight.currentState.ToString() +" lane: " + lane.getLaneNumber());
             }
+            
+
+            Server server = new Server();
+
+            Thread newThread = new Thread(new ThreadStart(server.createListener));
+            //server.createListener();
+            newThread.Start();
+            
+
+            Console.WriteLine("the server is created! press enter to send a message (already the json)");
+            Console.ReadLine();
+            JSONConverter json = new JSONConverter(server);
+            json.sendMessage(lanes);
+            
+
             Console.ReadLine();
         }
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace controller.Classes
 {
-    public enum lightColor { green, yellow, red };
+    public enum lightColor { green, yellow, red, straightforwardRight, straightforward, right };
     class TrafficLight
     {
         public lightColor currentState { get; set; }

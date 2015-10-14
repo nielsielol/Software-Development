@@ -8,7 +8,6 @@ namespace controller.Classes
 {
     class Tickerthread
     {
-        //List<TrafficLight> 
         public void Run() {
 
         }
