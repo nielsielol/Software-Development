@@ -8,10 +8,13 @@ namespace controller.Classes
 {
     class Tickerthread
     {
+        //List<TrafficLight> 
         public void Run() {
 
         }
 
-        public void addGreenLightTicker
+        public void addGreenLightTicker() {
+
+        }
     }
 }

@@ -33,9 +33,9 @@ namespace controller.Classes
             this.defaultPriority = defaultPriority;
         }
 
-        public void changeTrafficLight()
+        public void setTrafficLight(lightColor lightcolor)
         {
-            trafficLight.changeTrafficLight();
+            trafficLight.setTrafficLight(lightcolor);
         }
 
         /// <summary>
