@@ -8,10 +8,14 @@ namespace controller.Classes
 {
     class Tickerthread
     {
+
+
         public void Run() {
 
         }
 
-        public void addGreenLightTicker
+        public void addGreenLightTicker() {
+
+        }
     }
 }

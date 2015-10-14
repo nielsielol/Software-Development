@@ -35,7 +35,7 @@ namespace controller.Classes
 
         public void changeTrafficLight()
         {
-            trafficLight.changeTrafficLight();
+            
         }
 
         /// <summary>
