@@ -58,6 +58,7 @@ namespace controller.Classes
                 Thread.Sleep(10);
                 Console.WriteLine(output);
                 socket = tcpListener.AcceptSocket();
+                Console.WriteLine("send that we got a connection and we can start everything");
                 NetworkStream stream = new NetworkStream(socket);
                 string received = "";
                 int sameReceived = 0;
@@ -162,5 +163,7 @@ namespace controller.Classes
                 Console.WriteLine(e.ToString());
             }
         }
+
+        
     }
 }

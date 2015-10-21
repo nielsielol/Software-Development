@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Classes\JSONConverter.cs" />
     <Compile Include="Classes\Lane.cs" />
+    <Compile Include="Classes\MainCore.cs" />
     <Compile Include="Classes\Server.cs" />
     <Compile Include="Classes\Tickerthread.cs" />
     <Compile Include="Classes\TrafficLight.cs" />

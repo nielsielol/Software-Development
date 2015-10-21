@@ -10,23 +10,20 @@ namespace controller
 {
     class Program
     {
-        public static List<Lane> lanes = new List<Lane>();
-        
-
         static void Main(string[] args)
         {
             Console.WriteLine("we are working :D");
-            initializeLanes();
+            /*initializeLanes();
             lanes = getNewState(lanes);
             foreach (Lane lane in lanes) {
                 Console.WriteLine("state:" + lane.trafficLight.currentState.ToString() +" lane: " + lane.getLaneNumber());
-            }
+            }*/
             
 
             Server server = new Server();
 
             Thread newThread = new Thread(new ThreadStart(server.createListener));
-            //server.createListener();
+            //we are gonna listen for a 
             newThread.Start();
             
 
@@ -39,7 +36,7 @@ namespace controller
             Console.ReadLine();
         }
 
-        public static void initializeLanes() {
+        /*public static void initializeLanes() {
             
             lanes.Add(new Lane(0, new List<int> { 4, 8, 13 }, "Normallane (sidelane)"));
             lanes.Add(new Lane(1, new List<int> { 5, 6, 9, 10, 11, 12, 13, 16 }, "Normallane direction = left",5));
@@ -64,75 +61,10 @@ namespace controller
             lanes[11].setVehicleWaiting(true);
             lanes[7].setVehicleWaiting(true);
             Console.WriteLine(lanes[2].laneNumber + ":" + lanes[2].trafficLight.currentState);
-        }
+        }*/
 
-        /// <summary>
-        /// just run this with the up to date list of lanes and it will return the lane with the hightest priority
-        /// this should be called after the first cars arrived
-        /// </summary>
-        /// <param name="lanes">list of the up to date lanes</param>
-        /// <returns>the lane with the highest priority</returns>
-        private static Lane getHighestPriority(List<Lane> lanes) {
-            int higestPriority = 11;
-            Lane currentLane = new Lane(0, null, "");
+        
 
-            foreach (Lane lane in lanes) {
-                if (lane.getPriority() < higestPriority && lane.getPriority() != 0) {
-                    higestPriority = lane.getPriority();
-                    currentLane = lane;
-                }
-            }
-
-            
-            if (higestPriority == 11) {
-                Console.WriteLine("[program.cs - getHighestPriority] - Error no highest priority found");
-                //throw new Exception("error no highest priority found");
-                return default(Lane);
-            }
-
-            return currentLane;
-        }
-
-        public static List<Lane> getNewState(List<Lane> lanes) {
-            List<Lane> newState = new List<Lane>();
-            List<int> crossLanes = new List<int>();
-
-            while (lanes.Count > 0) {
-                Lane highestPriority = getHighestPriority(lanes);
-                if (highestPriority == null)
-                    break;//get out of the while loop becouse we don't have a lane to check anymore
-
-                highestPriority.trafficLight.currentState = lightColor.green;
-                lanes.Remove(highestPriority);
-
-                //crossLanes = highestPriority.crossingLanes;
-                foreach (int i in highestPriority.crossingLanes) {
-                    crossLanes.Add(i);
-                }
-
-                List<Lane> tempLanes = new List<Lane>();
-                
-                foreach (Lane lane in lanes) {
-                    
-                    foreach (int crosslane in crossLanes) {
-                        if (crosslane == lane.getLaneNumber())
-                        {
-                            lane.trafficLight.currentState = lightColor.red;
-                            tempLanes.Add(lane);
-                            newState.Add(lane);
-                            break;
-                        }
-                    }
-                }
-                foreach (Lane lane in tempLanes) {
-                    lanes.Remove(lane);
-                }
-
-                newState.Add(highestPriority);
-                
-            }
-
-            return newState;
-        }
+        
     }
 }

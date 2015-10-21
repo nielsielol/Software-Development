@@ -17,6 +17,9 @@ namespace controller.Classes
         private int priority = 0;
         private bool vehicleWaiting = false;
 
+        private bool greenTicker, redTicker, yellowTicker; // redTicker is also the priorityTicker
+        private int prioritySeconds;
+
         public List<int> crossingLanes = new List<int>();
 
         /// <summary>
@@ -33,10 +36,57 @@ namespace controller.Classes
             this.defaultPriority = defaultPriority;
         }
 
-        public void changeTrafficLight()
+        public void changeTrafficLight(Classes.lightColor newColor)
         {
-            
+            switch (newColor) {
+                case Classes.lightColor.red:
+                    priority = 0;
+                    if (vehicleWaiting) {
+                        setPriority();
+                        redTicker = true;
+                    }
+                    break;
+                case Classes.lightColor.yellow:
+                    yellowTicker = true;
+                    break;
+                case Classes.lightColor.green:
+                    greenTicker = true;
+                    break;
+                case Classes.lightColor.straightforwardRight:
+                    greenTicker = true;
+                    break;
+                case Classes.lightColor.straightforward:
+                    greenTicker = true;
+                    break;
+                case Classes.lightColor.right:
+                    greenTicker = true;
+                    break;
+            }
         }
+
+
+        /// <summary>
+        /// call this from the tickerthread if this returns true then the light needs to be changed to yellow (this is already done) but it has to be send to the client
+        /// </summary>
+        /// <returns>true means add this change to the client message</returns>
+        public bool laneTicker() {
+            if (redTicker) {
+                trafficLight.increaseRedLight();
+                if (prioritySeconds % 10 == 0) {
+                    increasePriority();
+                }
+                prioritySeconds++;
+            }
+            if (yellowTicker) {
+                return trafficLight.checkAndChangeLight();
+            } if (greenTicker) {
+                trafficLight.increaseGreenLight();
+            }
+
+            return false;
+        }
+
+
 
         /// <summary>
         /// this will return the lane number use this for checking crosslanes
