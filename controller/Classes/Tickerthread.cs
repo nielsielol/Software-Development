@@ -9,8 +9,6 @@ namespace controller.Classes
 {
     class Tickerthread
     {
-
-
         public void Run() {
             while (true) {
                 Thread.Sleep(100 /*100ms*/);

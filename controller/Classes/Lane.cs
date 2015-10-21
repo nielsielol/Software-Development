@@ -36,6 +36,7 @@ namespace controller.Classes
             this.defaultPriority = defaultPriority;
         }
 
+
         public void changeTrafficLight(Classes.lightColor newColor)
         {
             switch (newColor) {
@@ -69,23 +70,28 @@ namespace controller.Classes
         /// call this from the tickerthread if this returns true then the light needs to be changed to yellow (this is already done) but it has to be send to the client
         /// </summary>
         /// <returns>true means add this change to the client message</returns>
-        public bool laneTicker() {
-            if (redTicker) {
+        public bool laneTicker()
+        {
+            if (redTicker)
+            {
                 trafficLight.increaseRedLight();
-                if (prioritySeconds % 10 == 0) {
+                if (prioritySeconds % 10 == 0)
+                {
                     increasePriority();
                 }
                 prioritySeconds++;
             }
-            if (yellowTicker) {
+            if (yellowTicker)
+            {
                 return trafficLight.checkAndChangeLight();
-            } if (greenTicker) {
+            }
+            if (greenTicker)
+            {
                 trafficLight.increaseGreenLight();
             }
 
             return false;
         }
-
 
 
         /// <summary>

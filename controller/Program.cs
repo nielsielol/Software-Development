@@ -29,8 +29,8 @@ namespace controller
 
             Console.WriteLine("the server is created! press enter to send a message (already the json)");
             Console.ReadLine();
-            JSONConverter json = new JSONConverter(server);
-            json.sendMessage(lanes);
+            //JSONConverter json = new JSONConverter(server);
+            //json.sendMessage(lanes);
             
 
             Console.ReadLine();
