@@ -12,26 +12,34 @@ namespace controller
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("we are working :D");
+            test();
+        }
+
+        public static void test() {
+            Console.WriteLine("We are running a test");
+        }
+
+        public static void normal() {
+            Console.WriteLine("we are running the normal program");
             /*initializeLanes();
             lanes = getNewState(lanes);
             foreach (Lane lane in lanes) {
                 Console.WriteLine("state:" + lane.trafficLight.currentState.ToString() +" lane: " + lane.getLaneNumber());
             }*/
-            
+
 
             Server server = new Server();
 
             Thread newThread = new Thread(new ThreadStart(server.createListener));
             //we are gonna listen for a 
             newThread.Start();
-            
+
 
             Console.WriteLine("the server is created! press enter to send a message (already the json)");
             Console.ReadLine();
             //JSONConverter json = new JSONConverter(server);
             //json.sendMessage(lanes);
-            
+
 
             Console.ReadLine();
         }
