@@ -17,6 +17,30 @@ namespace controller
 
         public static void test() {
             Console.WriteLine("We are running a test");
+
+            Server server = new Server();
+            Thread newThread = new Thread(new ThreadStart(server.createListener));
+            newThread.Start(); //here we start the server
+
+            Console.WriteLine("the server is created! press enter to send a message (already the json)");
+            while (true)
+            {
+                Console.ReadLine();
+                List<Lane> lanes = new List<Lane>();
+                lanes.Add(new Lane(0, new List<int> { 4, 8, 13 }, "Normallane (sidelane)"));
+                lanes.Add(new Lane(1, new List<int> { 5, 6, 9, 10, 11, 12, 13, 16 }, "Normallane direction = left", 5));
+                lanes.Add(new Lane(2, new List<int> { 5, 6, 7, 8, 12, 13 }, "doublelane direction = straigt"));
+                lanes.Add(new Lane(3, new List<int> { 5, 6, 7, 7, 12, 13 }, "doublelane direction = straigt"));
+                lanes.Add(new Lane(4, new List<int> { 0, 8, 13, 15 }, "Normalelane direction = right"));
+                lanes.Add(new Lane(5, new List<int> { 1, 2, 3, 8, 9, 10, 13, 14, 16 }, "Normalelane direction = left"));
+                lanes.Add(new Lane(6, new List<int> { 1, 2, 3, 15, 8, 9, 10, 16, 12 }, "Normalelane direction = straight"));
+                lanes.Add(new Lane(7, new List<int> { 2, 3, 12, 15 }, "Normalelane direction = right"));
+
+                JSONConverter json = new JSONConverter(server);
+                Console.WriteLine("we are sending a message from program.cs!");
+                json.sendMessage(lanes);
+            }
+
         }
 
         public static void normal() {

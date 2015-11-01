@@ -11,6 +11,21 @@ namespace controller.Classes
         public List<Stoplicht> stoplichten { get; set; }
     }
 
+    class GotData {
+        public List<Banen> banen { get; set; }
+    }
+
+    class Banen {
+        public Banen(int id, bool bezet)
+        {
+            this.id = id;
+            this.bezet = bezet;
+        }
+
+        public int id { get; set; }
+        public bool bezet { get; set; }
+    }
+
     class Stoplicht{
         public Stoplicht(int id, int status) {
             this.id = id;
@@ -36,9 +51,8 @@ namespace controller.Classes
             foreach ( Lane lane in lanes)
             {
                 int status = 0;
-                switch (lane.trafficLight.currentState)
+                switch (lane.trafficLight.getCurrentState())
                 {
-
                     case Classes.lightColor.yellow:
                         status = 1;
                         break;
@@ -62,8 +76,16 @@ namespace controller.Classes
             }
             data.stoplichten = sended;
             string output = JsonConvert.SerializeObject(data);
-            //Console.WriteLine(output);
+            Console.WriteLine("we are sending this: " + output);
             server.sendMessage(output);
+        }
+
+        public void getMessage(string Jsonstring) {
+            GotData hallo = (GotData) JsonConvert.DeserializeObject(Jsonstring);
+
+            foreach (Banen baan in hallo.banen) {
+            }
+
         }
     }
 }

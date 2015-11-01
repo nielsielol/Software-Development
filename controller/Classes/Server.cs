@@ -82,7 +82,7 @@ namespace controller.Classes
                         }
                         received = Encoding.ASCII.GetString(bytes, 0, bytes.Length);
 
-                        Console.WriteLine("we received the follwing: " + received);
+                        //Console.WriteLine("we received the follwing: " + received);
                         messageReceived(received);
 
                     }
@@ -110,7 +110,13 @@ namespace controller.Classes
         /// </summary>
         /// <param name="message">this will be a JSON string</param>
         private void messageReceived(string message) {//this will be called when we received a message
+            char[] test = {' '};
+            Console.WriteLine(message.TrimEnd(test));
 
+            //
+        
+            //Console.WriteLine(message.Length);
+            //Console.WriteLine(message);
         }
 
         /// <summary>

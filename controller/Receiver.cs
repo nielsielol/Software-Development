@@ -149,14 +149,12 @@ namespace controller
         }
 
 
-        public static int Main(String[] args)
+        /*public static int Main(String[] args)
         {
             StartListening();
             return 0;
-        }
+        }*/
     }
-
-
 
     public class StateObject
     {
