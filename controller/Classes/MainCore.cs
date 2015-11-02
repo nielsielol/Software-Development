@@ -61,7 +61,6 @@ namespace controller.Classes
             if (higestPriority == 11) // 11 refers to this highest priority :)
             {
                 Console.WriteLine("[program.cs - getHighestPriority] - Error no highest priority found");
-                //throw new Exception("error no highest priority found");
                 return default(Lane);
             }
 
@@ -78,12 +77,8 @@ namespace controller.Classes
             List<Lane> newState = new List<Lane>();
             List<int> crossLanes = new List<int>();
 
+            lanes[0].trafficLight.
 
-            /* add a piece that will find out when lanes need to stay green 
-            
-
-
-            */
             while (lanes.Count > 0)
             {
                 Lane highestPriority = getHighestPriority(lanes);

@@ -10,8 +10,11 @@ namespace controller.Classes
     class Tickerthread
     {
         public void Run() {
-            while (true) {
-                Thread.Sleep(100 /*100ms*/);
+            while (true) {// we are going to look every second if we need to change the 
+                Thread.Sleep(1000 /*1000ms*/);
+
+
+
             }
         }
 

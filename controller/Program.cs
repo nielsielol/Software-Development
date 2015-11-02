@@ -15,13 +15,25 @@ namespace controller
             test();
         }
 
-        public static void test() {
-            Console.WriteLine("We are running a test");
+        public static void testJSON() {
+            Console.WriteLine("We are running a test (JSON)");
 
             Server server = new Server();
             Thread newThread = new Thread(new ThreadStart(server.createListener));
             newThread.Start(); //here we start the server
+            JSONConverter json = new JSONConverter(server);
 
+            json.getMessage("{busbanen:[{\"id\":1,\"eerstvolgendelijn\":70,\"bezet\":true},{\"id\":2,\"eerstvolgendelijn\":170,\"bezet\":false}]}");
+
+        }
+
+        public static void test() {
+            Console.WriteLine("We are running a test (Connection test)");
+
+            Server server = new Server();
+            Thread newThread = new Thread(new ThreadStart(server.createListener));
+            newThread.Start(); //here we start the server
+            JSONConverter json = new JSONConverter(server);
             Console.WriteLine("the server is created! press enter to send a message (already the json)");
             while (true)
             {
@@ -36,7 +48,7 @@ namespace controller
                 lanes.Add(new Lane(6, new List<int> { 1, 2, 3, 15, 8, 9, 10, 16, 12 }, "Normalelane direction = straight"));
                 lanes.Add(new Lane(7, new List<int> { 2, 3, 12, 15 }, "Normalelane direction = right"));
 
-                JSONConverter json = new JSONConverter(server);
+                
                 Console.WriteLine("we are sending a message from program.cs!");
                 json.sendMessage(lanes);
             }

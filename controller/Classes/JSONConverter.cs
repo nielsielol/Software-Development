@@ -13,6 +13,20 @@ namespace controller.Classes
 
     class GotData {
         public List<Banen> banen { get; set; }
+        public List<BusBanen> busbanen { get; set; }
+    }
+
+    class BusBanen {
+        public BusBanen(int id, int eerstvolgendelijn, bool bezet)
+        {
+            this.id = id;
+            this.eerstvolgendelijn = eerstvolgendelijn;
+            this.bezet = bezet;
+        }
+
+        public int id { get; set; }
+        public int eerstvolgendelijn { get; set; }
+        public bool bezet { get; set; }
     }
 
     class Banen {
@@ -77,13 +91,27 @@ namespace controller.Classes
             data.stoplichten = sended;
             string output = JsonConvert.SerializeObject(data);
             Console.WriteLine("we are sending this: " + output);
-            server.sendMessage(output);
+            server.sendMessage(output);            
         }
 
-        public void getMessage(string Jsonstring) {
-            GotData hallo = (GotData) JsonConvert.DeserializeObject(Jsonstring);
 
-            foreach (Banen baan in hallo.banen) {
+        public void getMessage(string Jsonstring) {
+            GotData received = JsonConvert.DeserializeObject<GotData>(Jsonstring);
+            
+            Console.WriteLine("[JSONConverter.cs] - we are in the getMessage(), we are presenting the id's and the occupied booleans");
+
+            if (received.banen != null)
+            {
+                foreach (Banen baan in received.banen)
+                {
+                    Console.WriteLine("baanId: " + baan.id + " baanBezet: " + baan.bezet);
+                }
+            }
+            else if (received.busbanen != null) {
+                foreach (BusBanen busbaan in received.busbanen)
+                {
+                    Console.WriteLine("baanId: " + busbaan.id + " baanEerstvolgendelijn: " +busbaan.eerstvolgendelijn +" baanBezet: " + busbaan.bezet);
+                }
             }
 
         }
