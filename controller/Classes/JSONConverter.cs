@@ -53,9 +53,14 @@ namespace controller.Classes
     class JSONConverter
     {
         Server server;
-        public JSONConverter(Server server)
+        Tickerthread ticker;
+        public JSONConverter()
         {
+        }
+
+        public void setServerTicker(Server server,Tickerthread ticker) {
             this.server = server;
+            this.ticker = ticker;
         }
 
 
@@ -105,12 +110,25 @@ namespace controller.Classes
                 foreach (Banen baan in received.banen)
                 {
                     Console.WriteLine("baanId: " + baan.id + " baanBezet: " + baan.bezet);
+                    ticker.mainCore.lanesState[baan.id].setVehicleWaiting(baan.bezet);
                 }
             }
             else if (received.busbanen != null) {
                 foreach (BusBanen busbaan in received.busbanen)
                 {
-                    Console.WriteLine("baanId: " + busbaan.id + " baanEerstvolgendelijn: " +busbaan.eerstvolgendelijn +" baanBezet: " + busbaan.bezet);
+                    Console.WriteLine("busBaanId: " + busbaan.id + " baanEerstvolgendelijn: " +busbaan.eerstvolgendelijn +" baanBezet: " + busbaan.bezet);
+                    if (busbaan.eerstvolgendelijn == 170)
+                    {
+                        if (busbaan.id == 15) {
+                            Console.WriteLine("WARNING THIS MAY NOT HAPPEN IN ANY CASE! NOT MY FAULT BUT THE CLIENT HIS FAULT:"+
+                                 " we got a bus with lijn 170 on the busbaan this may not happen!");
+                        }
+                        ticker.mainCore.lanesState[busbaan.id].setVehicleWaiting(busbaan.bezet);
+                    }
+                    else {
+                        ticker.mainCore.lanesState[busbaan.id].setVehicleWaiting(busbaan.bezet, busbaan.eerstvolgendelijn);
+                    }
+
                 }
             }
 

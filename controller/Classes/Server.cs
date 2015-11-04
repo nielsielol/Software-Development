@@ -15,12 +15,14 @@ namespace controller.Classes
         static string output;
         private readonly int port = 11000;
         private Socket socket;
+        JSONConverter json;
 
         /// <summary>
         ///  constructor not nessecary
         /// </summary>
-        public Server()
+        public Server(JSONConverter json)
         {
+            this.json = json;
         }
 
         public void createListener()
@@ -34,7 +36,6 @@ namespace controller.Classes
                 Console.WriteLine(ip.ToString());
                 if (ip.AddressFamily == AddressFamily.InterNetwork)
                 {
-                    Console.WriteLine(ip.ToString());
                     localAdress = ip;
 
                     break;
@@ -58,14 +59,14 @@ namespace controller.Classes
                 Thread.Sleep(10);
                 Console.WriteLine(output);
                 socket = tcpListener.AcceptSocket();
-                Console.WriteLine("send that we got a connection and we can start everything");
+                Console.WriteLine("We got a connection! Now we can start everything!");
                 NetworkStream stream = new NetworkStream(socket);
                 string received = "";
                 int sameReceived = 0;
                 while (true)
                 {
                     Thread.Sleep(10);
-                    Console.WriteLine("we are in the while loop");
+                    Console.WriteLine("We are in the while loop (waiting for a message)");
                     try
                     {
                         byte[] bytes = new byte[1024];// this is the buffer
@@ -110,13 +111,8 @@ namespace controller.Classes
         /// </summary>
         /// <param name="message">this will be a JSON string</param>
         private void messageReceived(string message) {//this will be called when we received a message
-            char[] test = {' '};
-            Console.WriteLine(message.TrimEnd(test));
-
-            //
-        
-            //Console.WriteLine(message.Length);
             //Console.WriteLine(message);
+            json.getMessage(message);
         }
 
         /// <summary>

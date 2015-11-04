@@ -15,8 +15,10 @@ namespace controller.Classes
         private int timeSpentYellow;
         private readonly int maxTimeYellow = 3;
         private int minTimeSpentGreen, maxTimeSpentGreen;
-        
-        
+        public bool maybeEddited { get; set; }
+
+
+
         /// <summary>
         /// constructor needs a minumum time spent green (default = 10 sec)
         /// </summary>
@@ -25,72 +27,71 @@ namespace controller.Classes
             currentState = lightColor.red;
             this.maxTimeSpentGreen = maxTimeSpentGreen;
             this.minTimeSpentGreen = minTimeSpentGreen;
+            maybeEddited = true;
+
         }
 
 
         /// <summary>
-        /// this changes the State of the trafficlight to the next state.
+        /// this changes the State of the trafficlight to the given lightcolor (only call when it's changed!)
         /// </summary>
         public void setTrafficLight(lightColor color) {
-            
-            if (color == lightColor.yellow) {
-                timeSpentYellow = 0;
+            if (color == lightColor.red) {//the color is changed to red so we need to set that timer to 0
+                timeSpentRed = 0;
+                maybeEddited = true;
             }
-            if (color == lightColor.green)
-            {
+            if (color == lightColor.yellow)
+            {//the color is changed to yellow so we need to set that timer to 0
                 timeSpentYellow = 0;
+                maybeEddited = false;
             }
-            currentState = color;
-        }
+            if (color == lightColor.green || color == lightColor.right || color == lightColor.straightforward
+                || color == lightColor.straightforwardRight)
+            {//the color is changed to green or something equal so we need to set that timer to 0
+                timeSpentGreen = 0;
+                maybeEddited = false;
+            }
+            this.currentState = color;
 
+        }
         /// <summary>
-        /// call this to add the time spend green
+        /// the methods will increase the lights and are controlling the maybeEddited!
         /// </summary>
+        #region increase and get the timeSpent
         public void increaseGreenLight() {
+            maybeEddited = false;
             timeSpentGreen++;
+            if (timeSpentGreen > minTimeSpentGreen) {
+                maybeEddited = true;
+            }
         }
 
         public int getTimeSpentGreen() {
             return timeSpentGreen;
         }
 
-        /// <summary>
-        /// call this to add the time spend red!
-        /// </summary>
         public void increaseRedLight() {
             timeSpentRed++;
+            maybeEddited = true;
         }
 
         public int getTimeSpentRed() {
             return timeSpentRed;
         }
-
-
-        /// <summary>
-        /// call for check and add yellowtime 
-        /// when this retruns true we got a change in lights
-        /// </summary>
-        /// <returns>true: lightchange, false: not a change in lightcolor</returns>
-        public bool checkAndChangeLight() {
-            if (currentState == lightColor.yellow)
-            {
-                if (maxTimeYellow > timeSpentYellow)
-                {
-                    timeSpentYellow++;
-                    return false;
-                }
-                else
-                {
-                    timeSpentYellow = 0;
-                    setTrafficLight(lightColor.red);
-                    return true;
-                }
-            }
-            else {
-                timeSpentYellow = 0;
-                return false;
-            }
+        
+        public void increaseYellowLight() {
+            timeSpentYellow++;
+            maybeEddited = false;
+            if (timeSpentYellow > maxTimeYellow) {
+                maybeEddited = true;
+            } 
+            
         }
+
+        public int getTimeSpentYellow() {
+            return timeSpentYellow;
+        }
+        #endregion
 
         public lightColor getCurrentState()
         {

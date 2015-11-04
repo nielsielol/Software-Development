@@ -10,6 +10,7 @@ namespace controller.Classes
     {
         public readonly int laneNumber;
         public readonly string comment;
+        public int eerstvolgendelijn;
 
         public TrafficLight trafficLight;
 
@@ -19,6 +20,7 @@ namespace controller.Classes
 
         private bool greenTicker, redTicker, yellowTicker; // redTicker is also the priorityTicker
         private int prioritySeconds;
+        
 
         public List<int> crossingLanes = new List<int>();
 
@@ -34,15 +36,47 @@ namespace controller.Classes
             this.crossingLanes = crossingLanes;
             trafficLight = new TrafficLight();
             this.defaultPriority = defaultPriority;
+            
         }
 
-
+        /// <summary>
+        /// call this with the color you want to change it to! call this once! and it will take care of the tickers :)
+        /// </summary>
+        /// <param name="newColor"></param>
         public void changeTrafficLight(Classes.lightColor newColor)
         {
+            greenTicker = false;
+            yellowTicker = false;
+            redTicker = false;
+            if(eerstvolgendelijn != 0) { 
+                if (laneNumber == 16 && (eerstvolgendelijn == 1 || eerstvolgendelijn == 71)) {
+                    if (newColor == lightColor.green) {
+                        newColor = lightColor.right;
+                    }
+                }
+
+                if (laneNumber == 16 && (eerstvolgendelijn == 70 || eerstvolgendelijn == 97))
+                {
+                    if (newColor == lightColor.green)
+                    {
+                        newColor = lightColor.straightforwardRight;
+                    }
+                }
+
+                if (laneNumber == 15 && (eerstvolgendelijn == 70 || eerstvolgendelijn == 97))
+                {
+                    if (newColor == lightColor.green)
+                    {
+                        newColor = lightColor.straightforward;
+                    }
+                }
+            }
+
             switch (newColor) {
                 case Classes.lightColor.red:
                     priority = 0;
-                    if (vehicleWaiting) {
+                    if (vehicleWaiting)
+                    {
                         setPriority();
                         redTicker = true;
                     }
@@ -63,19 +97,21 @@ namespace controller.Classes
                     greenTicker = true;
                     break;
             }
+
+            trafficLight.setTrafficLight(newColor);
         }
-
-
+        
         /// <summary>
         /// call this from the tickerthread if this returns true then the light needs to be changed to yellow (this is already done) but it has to be send to the client
         /// </summary>
         /// <returns>true means add this change to the client message</returns>
-        public bool laneTicker()
+        public void laneTicker()
         {
             if (redTicker)
             {
                 trafficLight.increaseRedLight();
-                if (prioritySeconds % 10 == 0)
+
+                if (prioritySeconds % 20 == 0)
                 {
                     increasePriority();
                 }
@@ -83,14 +119,13 @@ namespace controller.Classes
             }
             if (yellowTicker)
             {
-                return trafficLight.checkAndChangeLight();
+                trafficLight.increaseYellowLight();
             }
             if (greenTicker)
             {
                 trafficLight.increaseGreenLight();
             }
 
-            return false;
         }
 
 
@@ -106,7 +141,9 @@ namespace controller.Classes
         /// whenever a vehicle change presists call this function
         /// </summary>
         /// <param name="waiting">true for vehicle waiting, false when there isn't</param>
-        public void setVehicleWaiting(bool waiting) {
+        public void setVehicleWaiting(bool waiting, int eerstvolgendelijn = 0) {
+            this.eerstvolgendelijn = eerstvolgendelijn;
+
             vehicleWaiting = waiting;
             if (vehicleWaiting)//if it's true we will set the priority
                 setPriority();
@@ -115,11 +152,14 @@ namespace controller.Classes
         }
 
         /// <summary>
-        /// set the priority so this lane will start to wait for his turn.
+        /// set the priority so this lane will start to wait for his turn. if it's already waiting it won't reset so you
+        /// can call this as much as you want!
         /// </summary>
         private void setPriority()
         {
-            priority = defaultPriority;
+            if(priority < defaultPriority)
+                priority = defaultPriority;
+            redTicker = true;
         }
 
         /// <summary>
@@ -136,14 +176,18 @@ namespace controller.Classes
         /// </summary>
         public void increasePriority()
         {
-            if (priority > 1)
-            {
-                priority -= 1;
-            }
-            else
+            
+            if (priority < 1 && priority != 0)
             {
                 Console.WriteLine("[TrafficLight.cs - increasePriority] - priority is out of bounds");
                 priority = 1;
+            }
+            else
+            {
+                if (priority > 1)
+                {
+                    priority -= 1;
+                }
             }
 
         }

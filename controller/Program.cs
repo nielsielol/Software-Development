@@ -12,23 +12,24 @@ namespace controller
     {
         static void Main(string[] args)
         {
-            test();
+            normal();
         }
 
         public static void testJSON() {
-            Console.WriteLine("We are running a test (JSON)");
-
-            Server server = new Server();
-            Thread newThread = new Thread(new ThreadStart(server.createListener));
-            newThread.Start(); //here we start the server
+            /*Console.WriteLine("We are running a test (JSON)");
             JSONConverter json = new JSONConverter(server);
 
-            json.getMessage("{busbanen:[{\"id\":1,\"eerstvolgendelijn\":70,\"bezet\":true},{\"id\":2,\"eerstvolgendelijn\":170,\"bezet\":false}]}");
+            Server server = new Server(json);
+            Thread newThread = new Thread(new ThreadStart(server.createListener));
+            newThread.Start(); //here we start the server
+            
 
+            json.getMessage("{busbanen:[{\"id\":1,\"eerstvolgendelijn\":70,\"bezet\":true},{\"id\":2,\"eerstvolgendelijn\":170,\"bezet\":false}]}");
+            */
         }
 
         public static void test() {
-            Console.WriteLine("We are running a test (Connection test)");
+           /* Console.WriteLine("We are running a test (Connection test)");
 
             Server server = new Server();
             Thread newThread = new Thread(new ThreadStart(server.createListener));
@@ -51,30 +52,28 @@ namespace controller
                 
                 Console.WriteLine("we are sending a message from program.cs!");
                 json.sendMessage(lanes);
-            }
+            }*/
 
         }
 
         public static void normal() {
             Console.WriteLine("we are running the normal program");
-            /*initializeLanes();
-            lanes = getNewState(lanes);
-            foreach (Lane lane in lanes) {
-                Console.WriteLine("state:" + lane.trafficLight.currentState.ToString() +" lane: " + lane.getLaneNumber());
-            }*/
+            JSONConverter json = new JSONConverter();
 
 
-            Server server = new Server();
+            Server server = new Server(json);
 
             Thread newThread = new Thread(new ThreadStart(server.createListener));
-            //we are gonna listen for a 
+            Console.WriteLine("we are creating the server(communication)");
             newThread.Start();
+            
+            
 
-
-            Console.WriteLine("the server is created! press enter to send a message (already the json)");
-            Console.ReadLine();
-            //JSONConverter json = new JSONConverter(server);
-            //json.sendMessage(lanes);
+            Tickerthread ticker = new Tickerthread(json);
+            json.setServerTicker(server, ticker);
+            Thread secondThread = new Thread(ticker.Run);
+            Console.WriteLine("we are starting the second thread! so the program is running now (cpu )");
+            secondThread.Start();
 
 
             Console.ReadLine();
