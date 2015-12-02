@@ -28,10 +28,10 @@ namespace controller.Classes
                 {
                     //ticker all the lanes so if they need to be tickered they will if not they won't.
                     mainCore.mainTicker();
-                    Console.WriteLine("[tickerthread.cs] - inside socket connection! run the tickers!");
+                    Console.WriteLine("[tickerthread.cs] - inside socket connection! runned the tickers!");
                     //get a new state!
                     List<Lane> stateToBeSended = mainCore.getNewState();
-
+                    Console.WriteLine("[tickerthread.cs] - after getting a new state! before the ifs");
                     if (stateToBeSended != null)
                     {
                         if (stateToBeSended.Count > 0)

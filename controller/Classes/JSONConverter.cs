@@ -103,6 +103,7 @@ namespace controller.Classes
         }
 
 
+
         public void getMessage(string Jsonstring) {
             GotData received = JsonConvert.DeserializeObject<GotData>(Jsonstring);
             
