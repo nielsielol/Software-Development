@@ -69,7 +69,7 @@ namespace controller
             
             
 
-            Tickerthread ticker = new Tickerthread(json);
+            Tickerthread ticker = new Tickerthread(json, server);
             json.setServerTicker(server, ticker);
             Thread secondThread = new Thread(ticker.Run);
             Console.WriteLine("we are starting the second thread! so the program is running now (cpu )");

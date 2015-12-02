@@ -11,48 +11,40 @@ namespace controller.Classes
     {
         public MainCore mainCore;
         JSONConverter server;
+        Server socket;
 
-        public Tickerthread(JSONConverter server) {
+        public Tickerthread(JSONConverter server, Server socket) {
             mainCore = new MainCore();
             this.server = server;
+            this.socket = socket;
             mainCore.initializeLanes();
         }
 
         public void Run() {
             while (true) {// we are going to look every second if we need to change the 
                 Thread.Sleep(1000 /*1000ms*/);
-                mainCore.mainTicker();
-                /* List<Lane> newMainCoreState = new List<Lane>();
-                 foreach (Lane lane in mainCore.lanesState) {
-                     newMainCoreState.Add(lane);
-                 }*/
-
-
-                 List<Lane> stateToBeSended = mainCore.getNewState(mainCore.lanesState);
-                /*
-
-                 foreach (Lane lane in mainCore.lanesState) {
-                     newMainCoreState.Add(lane);
-                 }
-                 */
-
-                Console.WriteLine("we are here!");
-                if (stateToBeSended != null)
+                Console.WriteLine("[tickerthread.cs] - reached!");
+                if (socket.Connection)
                 {
-                    Console.WriteLine("satetobesended is niet null" + stateToBeSended.Count);
-                    if (stateToBeSended.Count > 0)
+                    //ticker all the lanes so if they need to be tickered they will if not they won't.
+                    mainCore.mainTicker();
+                    Console.WriteLine("[tickerthread.cs] - inside socket connection! run the tickers!");
+                    //get a new state!
+                    List<Lane> stateToBeSended = mainCore.getNewState();
+
+                    if (stateToBeSended != null)
                     {
-                        Console.WriteLine("Nu zenden we alleen de dingen die veranderd zijn!");
-                        foreach (Lane lane in stateToBeSended) {
-                            Console.WriteLine("id gewijzigd: " + lane.getLaneNumber());
+                        if (stateToBeSended.Count > 0)
+                        {
+                            //Console.WriteLine("[Tickerthread.cs] - run: Nu zenden we alleen de dingen die veranderd zijn!");
+                            foreach (Lane lane in stateToBeSended)
+                            {
+                                Console.WriteLine("deze lane wordt zometeen verstuurd: " + lane.getLaneNumber() + " state: " + lane.trafficLight.getCurrentState());
+                            }
+                            server.sendMessage(stateToBeSended);
                         }
-                        server.sendMessage(stateToBeSended);
                     }
                 }
-                else {
-                    Console.WriteLine("we havent got a state yet!");
-                }
-
             }
         }
     }

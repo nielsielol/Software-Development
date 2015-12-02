@@ -61,7 +61,9 @@ namespace controller.Classes
         public void increaseGreenLight() {
             maybeEddited = false;
             timeSpentGreen++;
+            Console.WriteLine("okay"+"time spent green: " + timeSpentGreen);
             if (timeSpentGreen > minTimeSpentGreen) {
+                
                 maybeEddited = true;
             }
         }

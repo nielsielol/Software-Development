@@ -85,6 +85,7 @@ namespace controller.Classes
                     yellowTicker = true;
                     break;
                 case Classes.lightColor.green:
+                    Console.WriteLine("we setted the greenticker on!");
                     greenTicker = true;
                     break;
                 case Classes.lightColor.straightforwardRight:
@@ -107,6 +108,7 @@ namespace controller.Classes
         /// <returns>true means add this change to the client message</returns>
         public void laneTicker()
         {
+            //Console.WriteLine("green Ticker: " );
             if (redTicker)
             {
                 trafficLight.increaseRedLight();

@@ -12,6 +12,7 @@ namespace controller.Classes
 {
     class Server
     {
+        public bool Connection = false;
         static string output;
         private readonly int port = 11000;
         private Socket socket;
@@ -59,13 +60,15 @@ namespace controller.Classes
                 Thread.Sleep(10);
                 Console.WriteLine(output);
                 socket = tcpListener.AcceptSocket();
+                Connection = true;
                 Console.WriteLine("We got a connection! Now we can start everything!");
                 NetworkStream stream = new NetworkStream(socket);
                 string received = "";
                 int sameReceived = 0;
                 while (true)
                 {
-                    Thread.Sleep(10);
+
+                    //Thread.Sleep(10);
                     Console.WriteLine("We are in the while loop (waiting for a message)");
                     try
                     {
@@ -89,9 +92,11 @@ namespace controller.Classes
                     }
                     catch (Exception e)
                     {// when we got an error (not a normal shutdown) we restart the listening and we wait for the connection to be reastablished
-                        Console.WriteLine("We got an error!" + e.ToString());
+                        Console.WriteLine("[Server.cs] - We got an error!" + e.ToString());
                         Console.WriteLine(output);
+                        Connection = false;
                         socket = tcpListener.AcceptSocket();
+                        Connection = true;
                         stream = new NetworkStream(socket);
                         received = "";
                         sameReceived = 0;
@@ -111,7 +116,7 @@ namespace controller.Classes
         /// </summary>
         /// <param name="message">this will be a JSON string</param>
         private void messageReceived(string message) {//this will be called when we received a message
-            //Console.WriteLine(message);
+            //Console.WriteLine("the message we received!"+message);
             json.getMessage(message);
         }
 
@@ -121,7 +126,7 @@ namespace controller.Classes
         /// <param name="message">JSON string</param>
         public void sendMessage(string message) {
             byte[] byteData = Encoding.ASCII.GetBytes(message);
-            Console.WriteLine("sending message: " + message);
+            //Console.WriteLine("sending message: " + message);
             /*
             if (socket != null) {
                 try {
@@ -131,41 +136,14 @@ namespace controller.Classes
                 }
             }*/
 
+            
             NetworkStream ns = new NetworkStream(socket);
             StreamWriter sw = new StreamWriter(ns);
             sw.WriteLine(message);
             sw.Flush();
-            Console.WriteLine("we sended?");
+            Console.WriteLine("we sended!");
             sw.Close();
             ns.Close();
         }
-
-        /// <summary>
-        /// this may only be called from this class
-        /// </summary>
-        /// <param name="ar"></param>
-        private static void SendCallback(IAsyncResult ar)
-        {
-            try
-            {
-                // Retrieve the socket from the state object.
-                Socket client = (Socket)ar.AsyncState;
-                //Console.WriteLine(client);
-
-                // Complete sending the data to the remote device.
-                int bytesSent = client.EndSend(ar);
-                Console.WriteLine("Sent {0} bytes to server.", bytesSent);
-
-                // Signal that all bytes have been sent.
-                //sendDone.Set();
-                //client.EndSend(ar);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-            }
-        }
-
-        
     }
 }

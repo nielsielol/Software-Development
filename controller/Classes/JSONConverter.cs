@@ -91,11 +91,14 @@ namespace controller.Classes
                         status = 0;
                         break;
                 }
-                sended.Add(new Stoplicht(lane.laneNumber, status));
+                if(lane.laneNumber >= 18)//als lane number groter is dan 18 of gelijk aan 18
+                    sended.Add(new Stoplicht(lane.laneNumber+1, status));
+                else
+                    sended.Add(new Stoplicht(lane.laneNumber, status));
             }
             data.stoplichten = sended;
             string output = JsonConvert.SerializeObject(data);
-            Console.WriteLine("we are sending this: " + output);
+            //Console.WriteLine("we are sending this: " + output);
             server.sendMessage(output);            
         }
 
@@ -103,14 +106,31 @@ namespace controller.Classes
         public void getMessage(string Jsonstring) {
             GotData received = JsonConvert.DeserializeObject<GotData>(Jsonstring);
             
-            Console.WriteLine("[JSONConverter.cs] - we are in the getMessage(), we are presenting the id's and the occupied booleans");
-
+            //Console.WriteLine("[JSONConverter.cs] - we are in the getMessage(), we are presenting the id's and the occupied booleans");
+            //Console
             if (received.banen != null)
             {
                 foreach (Banen baan in received.banen)
                 {
+
                     Console.WriteLine("baanId: " + baan.id + " baanBezet: " + baan.bezet);
-                    ticker.mainCore.lanesState[baan.id].setVehicleWaiting(baan.bezet);
+                    //Console.WriteLine("pleh" + ticker.mainCore.lanesState.Count);
+                    if (baan.id > 18)
+                        ticker.mainCore.lanesState[baan.id - 1].setVehicleWaiting(baan.bezet);
+                    else
+                        ticker.mainCore.lanesState[baan.id].setVehicleWaiting(baan.bezet);
+
+                    // extra hardcoded 2 en 3 erin zetten
+                    if (baan.id == 2 || baan.id == 3) {
+                        ticker.mainCore.lanesState[2].setVehicleWaiting(baan.bezet);
+                        ticker.mainCore.lanesState[3].setVehicleWaiting(baan.bezet);
+                    }
+                    if (baan.id == 9 || baan.id == 10)
+                    {
+                        ticker.mainCore.lanesState[9].setVehicleWaiting(baan.bezet);
+                        ticker.mainCore.lanesState[10].setVehicleWaiting(baan.bezet);
+                    }
+                    //Console.WriteLine("we need to reach this!!!!!");
                 }
             }
             else if (received.busbanen != null) {
