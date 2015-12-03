@@ -135,6 +135,8 @@ namespace controller.Classes
                 if (lane.trafficLight.getCurrentState() == lightColor.yellow && lane.trafficLight.maybeEddited) {
                     lane.changeTrafficLight(lightColor.red);
                     newState.Add(lane);
+                    //double check
+                    fuckdezeShit = lane;
                 }
             }
             //Console.WriteLine("1");
@@ -145,8 +147,8 @@ namespace controller.Classes
 
             
 
-            if (!waitForThisOne)//als er een priority is van 2 of lager dan gaan we geen nieuwe state geven.
-            {
+            //if (!waitForThisOne)//als er een priority is van 2 of lager dan gaan we geen nieuwe state geven.
+            
                // Console.WriteLine("2");
                 // zolang nog niet alle lanes nog niet gecheckt zijn moeten we doorgaan!
                 while (temporaryLanes.Count > 0)
@@ -167,30 +169,41 @@ namespace controller.Classes
                             startOver = true;
                         }
                     }
-                    //Console.WriteLine("3");
-                    if (!startOver)
-                    {
-                        //Console.WriteLine("4");
-
+                //Console.WriteLine("3");
+                if (!startOver)
+                {
+                    bool weAddedAPriority = false;
+                    //Console.WriteLine("4");
+                    if (!waitForThisOne) {
                         // zet daarna de kleur van dit licht op groen!
-                        if (highestPriority.trafficLight.getCurrentState() != lightColor.green)
+                        if (highestPriority.trafficLight.getCurrentState() != lightColor.green &&
+                            highestPriority.trafficLight.getCurrentState() != lightColor.right &&
+                            highestPriority.trafficLight.getCurrentState() != lightColor.straightforwardRight &&
+                            highestPriority.trafficLight.getCurrentState() != lightColor.straightforward)
                         {
-                            Console.WriteLine("we zetten dit licht op groen! " + highestPriority.getLaneNumber());
+                            //Console.WriteLine("we zetten dit licht op groen! " + highestPriority.getLaneNumber());
                             //highestPriority.trafficLight.setTrafficLight(lightColor.green);
                             highestPriority.changeTrafficLight(lightColor.green);
                             newState.Add(highestPriority);
+                            weAddedAPriority = true;
                         }
+                    }
 
-                        // haal daarna de highest priority uit de checklijst
-                        temporaryLanes.Remove(highestPriority);
-                        // en voeg deze toe aan de nieuwe state!
-                        
+                    Console.WriteLine("1: " + temporaryLanes.Count);
+                    // haal daarna de highest priority uit de checklijst
+                    temporaryLanes.Remove(highestPriority);
+                    // en voeg deze toe aan de nieuwe state!
+                    Console.WriteLine("2: " + temporaryLanes.Count);
 
-                        // update de crossinglanes ( zodat er niet meer gecrossed kan worden )
+                    if (weAddedAPriority) { 
+                    // update de crossinglanes ( zodat er niet meer gecrossed kan worden )
                         foreach (int i in highestPriority.crossingLanes)
                         {
-                            crossLanes.Add(i);
+                                crossLanes.Add(i);
+
                         }
+                    }
+
 
                         // temporary list aangezien ik deze moet gebruiken om door te loopen
                         List<Lane> tempLanes = new List<Lane>();
@@ -203,10 +216,11 @@ namespace controller.Classes
                                 {
                                     // nu moet een stoplicht op rood worden gezet ( we kijken hier nog even)
                                     // als ie niet al op rood staat :D 
-                                    if (lane.trafficLight.getCurrentState() != lightColor.red)
+                                    if (lane.trafficLight.getCurrentState() != lightColor.yellow &&
+                                        lane.trafficLight.getCurrentState() != lightColor.red)
                                     {
                                         //lane.trafficLight.setTrafficLight(lightColor.red);
-                                        lane.changeTrafficLight(lightColor.red);
+                                        lane.changeTrafficLight(lightColor.yellow);
                                         tempLanes.Add(lane);
                                         newState.Add(lane);
                                     }
@@ -226,7 +240,7 @@ namespace controller.Classes
                     }
 
                 }
-            }
+            
             
             // nu hebben we de nieuwe state en gaan we de toekomstige nieuwe lijst updaten
             // zodat deze de nieuwe data bevat!

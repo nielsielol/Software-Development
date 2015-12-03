@@ -117,7 +117,7 @@ namespace controller.Classes
                     foreach (Banen baan in received.banen)
                     {
 
-                        Console.WriteLine("baanId: " + baan.id + " baanBezet: " + baan.bezet);
+                        Console.WriteLine("received: " + baan.id + ", " + baan.bezet);
                         //Console.WriteLine("pleh" + ticker.mainCore.lanesState.Count);
                         if (baan.id > 18)
                             ticker.mainCore.lanesState[baan.id - 1].setVehicleWaiting(baan.bezet);
@@ -142,7 +142,7 @@ namespace controller.Classes
                 {
                     foreach (BusBanen busbaan in received.busbanen)
                     {
-                        Console.WriteLine("busBaanId: " + busbaan.id + " baanEerstvolgendelijn: " + busbaan.eerstvolgendelijn + " baanBezet: " + busbaan.bezet);
+                        Console.WriteLine("busBaanId: " + busbaan.id + " lijn: " + busbaan.eerstvolgendelijn + ", " + busbaan.bezet);
                         if (busbaan.eerstvolgendelijn == 170)
                         {
                             if (busbaan.id == 15)
@@ -161,7 +161,7 @@ namespace controller.Classes
                 }
             }
             catch (JsonReaderException e) {
-                Console.WriteLine("json reader exception: ");
+                Console.WriteLine("json reader exception!");
             }
             catch (Exception e) {
                 

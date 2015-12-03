@@ -34,7 +34,7 @@ namespace controller.Classes
             IPAddress localAdress = host.AddressList[0];// = Dns.GetHostEntry("localhost").AddressList[0];
             foreach (IPAddress ip in host.AddressList)
             {
-                Console.WriteLine(ip.ToString());
+                //Console.WriteLine(ip.ToString());
                 if (ip.AddressFamily == AddressFamily.InterNetwork)
                 {
                     localAdress = ip;
@@ -69,7 +69,7 @@ namespace controller.Classes
                 {
 
                     //Thread.Sleep(10);
-                    Console.WriteLine("We are in the while loop (waiting for a message)");
+                    //Console.WriteLine("We are in the while loop (waiting for a message)");
                     try
                     {
                         byte[] bytes = new byte[1024];// this is the buffer
@@ -141,7 +141,7 @@ namespace controller.Classes
             StreamWriter sw = new StreamWriter(ns);
             sw.WriteLine(message);
             sw.Flush();
-            Console.WriteLine("we sended!");
+            //Console.WriteLine("we sended!");
             sw.Close();
             ns.Close();
         }

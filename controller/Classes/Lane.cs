@@ -82,10 +82,11 @@ namespace controller.Classes
                     }
                     break;
                 case Classes.lightColor.yellow:
+                    priority = 0;
                     yellowTicker = true;
                     break;
                 case Classes.lightColor.green:
-                    Console.WriteLine("we setted the greenticker on!");
+                    //Console.WriteLine("we setted the greenticker on!");
                     greenTicker = true;
                     break;
                 case Classes.lightColor.straightforwardRight:
@@ -116,7 +117,7 @@ namespace controller.Classes
                 if (prioritySeconds % 20 == 0)
                 {
                     increasePriority();
-                    Console.WriteLine("priority van: " + laneNumber + " met priority: " + priority);
+                   // Console.WriteLine("priority van: " + laneNumber + " met priority: " + priority);
                 }
                 prioritySeconds++;
             }
