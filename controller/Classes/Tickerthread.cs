@@ -23,15 +23,15 @@ namespace controller.Classes
         public void Run() {
             while (true) {// we are going to look every second if we need to change the 
                 Thread.Sleep(1000 /*1000ms*/);
-                Console.WriteLine("[tickerthread.cs] - reached!");
+               // Console.WriteLine("[tickerthread.cs] - reached!");
                 if (socket.Connection)
                 {
                     //ticker all the lanes so if they need to be tickered they will if not they won't.
                     mainCore.mainTicker();
-                    Console.WriteLine("[tickerthread.cs] - inside socket connection! runned the tickers!");
+                    //Console.WriteLine("[tickerthread.cs] - inside socket connection! runned the tickers!");
                     //get a new state!
                     List<Lane> stateToBeSended = mainCore.getNewState();
-                    Console.WriteLine("[tickerthread.cs] - after getting a new state! before the ifs");
+                    //Console.WriteLine("[tickerthread.cs] - after getting a new state! before the ifs");
                     if (stateToBeSended != null)
                     {
                         if (stateToBeSended.Count > 0)

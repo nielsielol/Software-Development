@@ -131,7 +131,7 @@ namespace controller.Classes
             if (getHighestPriority(temporaryLanes) == null) {
                 return default(List<Lane>);
             }
-            Console.WriteLine("0");
+           // Console.WriteLine("0");
             Lane fuckdezeShit = null;
             // we gaan door elke lane! en checken of we deze lane mogen veranderen of
             // dat hij van oranje naar groen moet!
@@ -159,7 +159,7 @@ namespace controller.Classes
                     newState.Add(lane);
                 }
             }
-            Console.WriteLine("1");
+            //Console.WriteLine("1");
 
             if (fuckdezeShit != null) {
                 temporaryLanes.Remove(fuckdezeShit);
@@ -167,7 +167,7 @@ namespace controller.Classes
 
             if (!waitForThisOne)//als er een priority is van 2 of lager dan gaan we geen nieuwe state geven.
             {
-                Console.WriteLine("2");
+               // Console.WriteLine("2");
                 // zolang nog niet alle lanes nog niet gecheckt zijn moeten we doorgaan!
                 while (temporaryLanes.Count > 0)
                 {
@@ -187,10 +187,10 @@ namespace controller.Classes
                             startOver = true;
                         }
                     }
-                    Console.WriteLine("3");
+                    //Console.WriteLine("3");
                     if (!startOver)
                     {
-                        Console.WriteLine("4");
+                        //Console.WriteLine("4");
 
                         // zet daarna de kleur van dit licht op groen!
                         if (highestPriority.trafficLight.getCurrentState() != lightColor.green)

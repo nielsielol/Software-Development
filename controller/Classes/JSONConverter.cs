@@ -105,54 +105,69 @@ namespace controller.Classes
 
 
         public void getMessage(string Jsonstring) {
-            GotData received = JsonConvert.DeserializeObject<GotData>(Jsonstring);
-            
-            //Console.WriteLine("[JSONConverter.cs] - we are in the getMessage(), we are presenting the id's and the occupied booleans");
-            //Console
-            if (received.banen != null)
+            try
             {
-                foreach (Banen baan in received.banen)
-                {
+                GotData received = JsonConvert.DeserializeObject<GotData>(Jsonstring);
 
-                    Console.WriteLine("baanId: " + baan.id + " baanBezet: " + baan.bezet);
-                    //Console.WriteLine("pleh" + ticker.mainCore.lanesState.Count);
-                    if (baan.id > 18)
-                        ticker.mainCore.lanesState[baan.id - 1].setVehicleWaiting(baan.bezet);
-                    else
-                        ticker.mainCore.lanesState[baan.id].setVehicleWaiting(baan.bezet);
 
-                    // extra hardcoded 2 en 3 erin zetten
-                    if (baan.id == 2 || baan.id == 3) {
-                        ticker.mainCore.lanesState[2].setVehicleWaiting(baan.bezet);
-                        ticker.mainCore.lanesState[3].setVehicleWaiting(baan.bezet);
-                    }
-                    if (baan.id == 9 || baan.id == 10)
-                    {
-                        ticker.mainCore.lanesState[9].setVehicleWaiting(baan.bezet);
-                        ticker.mainCore.lanesState[10].setVehicleWaiting(baan.bezet);
-                    }
-                    //Console.WriteLine("we need to reach this!!!!!");
-                }
-            }
-            else if (received.busbanen != null) {
-                foreach (BusBanen busbaan in received.busbanen)
+                //Console.WriteLine("[JSONConverter.cs] - we are in the getMessage(), we are presenting the id's and the occupied booleans");
+                //Console
+                if (received.banen != null)
                 {
-                    Console.WriteLine("busBaanId: " + busbaan.id + " baanEerstvolgendelijn: " +busbaan.eerstvolgendelijn +" baanBezet: " + busbaan.bezet);
-                    if (busbaan.eerstvolgendelijn == 170)
+                    foreach (Banen baan in received.banen)
                     {
-                        if (busbaan.id == 15) {
-                            Console.WriteLine("WARNING THIS MAY NOT HAPPEN IN ANY CASE! NOT MY FAULT BUT THE CLIENT HIS FAULT:"+
-                                 " we got a bus with lijn 170 on the busbaan this may not happen!");
+
+                        Console.WriteLine("baanId: " + baan.id + " baanBezet: " + baan.bezet);
+                        //Console.WriteLine("pleh" + ticker.mainCore.lanesState.Count);
+                        if (baan.id > 18)
+                            ticker.mainCore.lanesState[baan.id - 1].setVehicleWaiting(baan.bezet);
+                        else
+                            ticker.mainCore.lanesState[baan.id].setVehicleWaiting(baan.bezet);
+
+                        // extra hardcoded 2 en 3 erin zetten
+                        if (baan.id == 2 || baan.id == 3)
+                        {
+                            ticker.mainCore.lanesState[2].setVehicleWaiting(baan.bezet);
+                            ticker.mainCore.lanesState[3].setVehicleWaiting(baan.bezet);
                         }
-                        ticker.mainCore.lanesState[busbaan.id].setVehicleWaiting(busbaan.bezet);
+                        if (baan.id == 9 || baan.id == 10)
+                        {
+                            ticker.mainCore.lanesState[9].setVehicleWaiting(baan.bezet);
+                            ticker.mainCore.lanesState[10].setVehicleWaiting(baan.bezet);
+                        }
+                        //Console.WriteLine("we need to reach this!!!!!");
                     }
-                    else {
-                        ticker.mainCore.lanesState[busbaan.id].setVehicleWaiting(busbaan.bezet, busbaan.eerstvolgendelijn);
-                    }
+                }
+                else if (received.busbanen != null)
+                {
+                    foreach (BusBanen busbaan in received.busbanen)
+                    {
+                        Console.WriteLine("busBaanId: " + busbaan.id + " baanEerstvolgendelijn: " + busbaan.eerstvolgendelijn + " baanBezet: " + busbaan.bezet);
+                        if (busbaan.eerstvolgendelijn == 170)
+                        {
+                            if (busbaan.id == 15)
+                            {
+                                Console.WriteLine("WARNING THIS MAY NOT HAPPEN IN ANY CASE! NOT MY FAULT BUT THE CLIENT HIS FAULT:" +
+                                     " we got a bus with lijn 170 on the busbaan this may not happen!");
+                            }
+                            ticker.mainCore.lanesState[busbaan.id].setVehicleWaiting(busbaan.bezet);
+                        }
+                        else
+                        {
+                            ticker.mainCore.lanesState[busbaan.id].setVehicleWaiting(busbaan.bezet, busbaan.eerstvolgendelijn);
+                        }
 
+                    }
                 }
             }
-
+            catch (JsonReaderException e) {
+                Console.WriteLine("json reader exception: ");
+            }
+            catch (Exception e) {
+                
+                Console.WriteLine();
+                throw e;
+            }
         }
     }
 }
