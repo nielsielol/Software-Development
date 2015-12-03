@@ -88,14 +88,18 @@ namespace controller.Classes
                 case Classes.lightColor.green:
                     //Console.WriteLine("we setted the greenticker on!");
                     greenTicker = true;
+                    priority = 0;
                     break;
                 case Classes.lightColor.straightforwardRight:
                     greenTicker = true;
+                    priority = 0;
                     break;
                 case Classes.lightColor.straightforward:
                     greenTicker = true;
+                    priority = 0;
                     break;
                 case Classes.lightColor.right:
+                    priority = 0;
                     greenTicker = true;
                     break;
             }
