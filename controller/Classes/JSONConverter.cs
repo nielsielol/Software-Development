@@ -165,7 +165,7 @@ namespace controller.Classes
             }
             catch (Exception e) {
                 
-                Console.WriteLine();
+                Console.WriteLine(e.ToString());
                 throw e;
             }
         }
