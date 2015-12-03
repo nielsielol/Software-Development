@@ -92,7 +92,7 @@ namespace controller.Classes
                         break;
                 }
                 if(lane.laneNumber >= 18)//als lane number groter is dan 18 of gelijk aan 18
-                    sended.Add(new Stoplicht(lane.laneNumber+1, status));
+                    sended.Add(new Stoplicht(lane.laneNumber, status));
                 else
                     sended.Add(new Stoplicht(lane.laneNumber, status));
             }

@@ -116,6 +116,7 @@ namespace controller.Classes
                 if (prioritySeconds % 20 == 0)
                 {
                     increasePriority();
+                    Console.WriteLine("priority van: " + laneNumber + " met priority: " + priority);
                 }
                 prioritySeconds++;
             }
@@ -145,12 +146,21 @@ namespace controller.Classes
         /// <param name="waiting">true for vehicle waiting, false when there isn't</param>
         public void setVehicleWaiting(bool waiting, int eerstvolgendelijn = 0) {
             this.eerstvolgendelijn = eerstvolgendelijn;
+            if (!vehicleWaiting)
+            {
+                vehicleWaiting = waiting;
+                if (vehicleWaiting)//if it's true we will set the priority
+                    setPriority();
+                else
+                    priority = 0;
+            }
+            else {
+                vehicleWaiting = waiting;
+                if (!vehicleWaiting) {
+                    priority = 0;
+                }
 
-            vehicleWaiting = waiting;
-            if (vehicleWaiting)//if it's true we will set the priority
-                setPriority();
-            else
-                priority = 0;
+            }
         }
 
         /// <summary>
@@ -179,7 +189,7 @@ namespace controller.Classes
         public void increasePriority()
         {
             
-            if (priority < 1 && priority != 0)
+            if (priority <= 1 && priority != 0)
             {
                 Console.WriteLine("[TrafficLight.cs - increasePriority] - priority is out of bounds");
                 priority = 1;
