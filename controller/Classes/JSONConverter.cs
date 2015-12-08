@@ -161,7 +161,9 @@ namespace controller.Classes
                 }
             }
             catch (JsonReaderException e) {
-                Console.WriteLine("json reader exception!");
+                checkJSON(Jsonstring);
+                //Console.WriteLine("json reader exception!");
+                //Console.WriteLine(e.ToString());
             }
             catch (Exception e) {
                 
@@ -169,5 +171,23 @@ namespace controller.Classes
                 throw e;
             }
         }
+
+        public void checkJSON(string json)
+        {
+            //json.TrimEnd(new char[] { '/','0'});
+            string[] strings = json.Split( new char[]{'}',']','}' });
+            if (strings.Length > 30)
+                return;
+            foreach (string dothis in strings) {
+                if (!dothis.Equals("") &&  dothis[0] != '\0')
+                {
+                    string test = dothis + "}]}";
+                    //Console.WriteLine("string:" + dothis + ";");
+                    Console.WriteLine("string:" + test + ";");
+                    getMessage(test);
+                }
+            }
+        }
+
     }
 }

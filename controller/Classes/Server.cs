@@ -74,16 +74,16 @@ namespace controller.Classes
                     {
                         byte[] bytes = new byte[1024];// this is the buffer
                         stream.Read(bytes, 0, bytes.Length);
-                        if (received.Equals(Encoding.ASCII.GetString(bytes, 0, bytes.Length)))
+                        /*if (received.Equals(Encoding.ASCII.GetString(bytes, 0, bytes.Length)))
                         {// this means a normal shutdown so we should exit the program
                             sameReceived++;
                             if (sameReceived > 5)// als we 5 maal achterelkaar hetzelfde bericht krijgen moeten we afsluiten (een lekker grote check);
                                 return;
                         }
                         else
-                        {// reset when we don't have the same outcome
+                        { reset when we don't have the same outcome
                             sameReceived = 0;
-                        }
+                        }*/
                         received = Encoding.ASCII.GetString(bytes, 0, bytes.Length);
 
                         //Console.WriteLine("we received the follwing: " + received);
