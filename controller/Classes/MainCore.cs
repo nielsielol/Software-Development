@@ -110,7 +110,7 @@ namespace controller.Classes
                 return default(List<Lane>);
             }
            // Console.WriteLine("0");
-            Lane fuckdezeShit = null;
+            List<Lane> fuckdezeShit = new List<Lane>();
             // we gaan door elke lane! en checken of we deze lane mogen veranderen of
             // dat hij van oranje naar groen moet!
             foreach (Lane lane in temporaryLanes) {
@@ -124,7 +124,7 @@ namespace controller.Classes
                     }
                     // deze lane mag niet meegenomen worden aangezien hij niet aangepast mag worden
                     // (heeft onvoldoende tijd gehad om op een bepaalte kleur te staan)
-                    fuckdezeShit = lane;
+                    fuckdezeShit.Add(lane);
                     // als hij niet gewijzigd mag worden en hij een priority van 2 of lager heeft
                     // dan gaan we wachten tot hij wel gewijzigd mag worden!
                     if (lane.getPriority() <= 2)
@@ -136,13 +136,14 @@ namespace controller.Classes
                     lane.changeTrafficLight(lightColor.red);
                     newState.Add(lane);
                     //double check
-                    fuckdezeShit = lane;
+                    fuckdezeShit.Add(lane);
                 }
             }
             //Console.WriteLine("1");
 
-            if (fuckdezeShit != null) {
-                temporaryLanes.Remove(fuckdezeShit);
+            foreach (Lane lane in fuckdezeShit)
+            {
+                    temporaryLanes.Remove(lane);
             }
 
             
