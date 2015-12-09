@@ -23,7 +23,7 @@ namespace controller.Classes
         /// constructor needs a minumum time spent green (default = 10 sec)
         /// </summary>
         /// <param name="minTimeSpentGreen">int in seconds</param>
-        public TrafficLight(int minTimeSpentGreen = 5, int maxTimeSpentGreen = 120) {
+        public TrafficLight(int minTimeSpentGreen = 10, int maxTimeSpentGreen = 120) {
             currentState = lightColor.red;
             this.maxTimeSpentGreen = maxTimeSpentGreen;
             this.minTimeSpentGreen = minTimeSpentGreen;
