@@ -161,8 +161,8 @@ namespace controller.Classes
                 }
             }
             catch (JsonReaderException e) {
-                checkJSON(Jsonstring);
-                //Console.WriteLine("json reader exception!");
+                //checkJSON(Jsonstring);
+                Console.WriteLine("json reader exception!");
                 //Console.WriteLine(e.ToString());
             }
             catch (Exception e) {
