@@ -86,7 +86,6 @@ namespace controller.Classes
         /// <summary>
         /// call this to get a new state..
         /// </summary>
-        /// <param name="lanes">all the lanes</param>
         /// <returns>the new state</returns>
         public List<Lane> getNewState()
         {
@@ -107,6 +106,7 @@ namespace controller.Classes
             // hier checken we eerst op een highest priority
             // (als er geen voorkomt komt er ook geen nieuwe state)
             if (getHighestPriority(temporaryLanes) == null) {
+                Console.WriteLine("we didn't found a highest priority!");
                 return default(List<Lane>);
             }
            // Console.WriteLine("0");
@@ -139,7 +139,6 @@ namespace controller.Classes
                     temporaryLanesForAdding.Add(lane);
                 }
             }
-            //Console.WriteLine("1");
 
             foreach (Lane lane in temporaryLanesForAdding)
             {
@@ -150,7 +149,6 @@ namespace controller.Classes
 
             //if (!waitForThisOne)//als er een priority is van 2 of lager dan gaan we geen nieuwe state geven.
             
-               // Console.WriteLine("2");
                 // zolang nog niet alle lanes nog niet gecheckt zijn moeten we doorgaan!
                 while (temporaryLanes.Count > 0)
                 {
@@ -170,45 +168,38 @@ namespace controller.Classes
                             startOver = true;
                         }
                     }
-                //Console.WriteLine("3");
-                if (!startOver)
-                {
-                    bool weAddedAPriority = false;
-                    //Console.WriteLine("4");
-                    if (!waitForThisOne) {
-                        // zet daarna de kleur van dit licht op groen!
-                        if (highestPriority.trafficLight.getCurrentState() != lightColor.green &&
-                            highestPriority.trafficLight.getCurrentState() != lightColor.right &&
-                            highestPriority.trafficLight.getCurrentState() != lightColor.straightforwardRight &&
-                            highestPriority.trafficLight.getCurrentState() != lightColor.straightforward)
-                        {
-                            //Console.WriteLine("we zetten dit licht op groen! " + highestPriority.getLaneNumber());
-                            //highestPriority.trafficLight.setTrafficLight(lightColor.green);
-                            highestPriority.changeTrafficLight(lightColor.green);
-                            newState.Add(highestPriority);
-                            weAddedAPriority = true;
+                    if (!startOver)
+                    {
+                        bool weAddedAPriority = false;
+                        if (!waitForThisOne) {
+                            // zet daarna de kleur van dit licht op groen!
+                            if (highestPriority.trafficLight.getCurrentState() == lightColor.red)
+                            {
+                                //Console.WriteLine("we zetten dit licht op groen! " + highestPriority.getLaneNumber());
+                                //highestPriority.trafficLight.setTrafficLight(lightColor.green);
+                                highestPriority.changeTrafficLight(lightColor.green);
+                                newState.Add(highestPriority);
+                                weAddedAPriority = true;
+                            }
                         }
-                    }
 
-                    Console.WriteLine("1: " + temporaryLanes.Count);
-                    // haal daarna de highest priority uit de checklijst
-                    temporaryLanes.Remove(highestPriority);
-                    // en voeg deze toe aan de nieuwe state!
-                    Console.WriteLine("2: " + temporaryLanes.Count);
+                        //Console.WriteLine("1: " + temporaryLanes.Count);
+                        // haal daarna de highest priority uit de checklijst
+                        temporaryLanes.Remove(highestPriority);
+                        // en voeg deze toe aan de nieuwe state!
+                        //Console.WriteLine("2: " + temporaryLanes.Count);
 
-                    if (weAddedAPriority) { 
-                    // update de crossinglanes ( zodat er niet meer gecrossed kan worden )
-                        foreach (int i in highestPriority.crossingLanes)
-                        {
-                                crossLanes.Add(i);
-
+                        if (weAddedAPriority) { 
+                        // update de crossinglanes ( zodat er niet meer gecrossed kan worden )
+                            foreach (int i in highestPriority.crossingLanes)
+                            {
+                                    crossLanes.Add(i);
+                            }
                         }
-                    }
-
-
+                        
                         // temporary list aangezien ik deze moet gebruiken om door te loopen
                         List<Lane> tempLanes = new List<Lane>();
-
+                        
                         foreach (Lane lane in temporaryLanes)
                         {
                             foreach (int crosslane in crossLanes)
